@@ -1,9 +1,9 @@
 
-apiTitle: Notifications router
+apiTitle: notifications-router-svc
 splitSpec: true
 codeSamples: false
 swaggerUI: true
 travis: true
-repo: tokend/notifications/notifications-router-svc
+repo: tokend/notifications/proxima/notifications-router-svc
 oasVersion: 1.0.0
 

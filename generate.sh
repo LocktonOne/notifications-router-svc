@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 
-GENERATOR_IMAGE=registry.gitlab.com/tokend/openapi-go-generator:69f004b58152c83f007b593cc13e94b81d7200da
+GENERATOR_IMAGE=registry.gitlab.com/tokend/openapi-go-generator:cdc54618989198f546166de448527666fc273793
 
-GENERATED="${GOPATH}/src/gitlab.com/tokend/notifications/notifications-router-svc/resources"
-OPENAPI_DIR="${GOPATH}/src/gitlab.com/tokend/notifications/notifications-router-svc/docs/web_deploy"
+#GENERATED="${GOPATH}/src/gitlab.com/tokend/notifications/proxima/notifications-router-svc/resources"
+#OPENAPI_DIR="${GOPATH}/src/gitlab.com/tokend/notifications/proxima/notifications-router-svc/docs/web_deploy"
+
+GENERATED="$(pwd)/resources"
+OPENAPI_DIR="$(pwd)/docs/web_deploy"
+
 PACKAGE_NAME=resources
 
 function printHelp {
@@ -48,7 +52,7 @@ function parseArgs {
 }
 
 function generate {
-    docker run -v "${OPENAPI_DIR}":/openapi -v "${GENERATED}":/generated "${GENERATOR_IMAGE}" generate -pkg "${PACKAGE_NAME}" --raw-formats-as-types
+    docker run --rm -v "${OPENAPI_DIR}":/openapi -v "${GENERATED}":/generated "${GENERATOR_IMAGE}" generate -pkg "${PACKAGE_NAME}" --raw-formats-as-types
 }
 
 parseArgs "$@"
