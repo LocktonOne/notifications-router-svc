@@ -10,7 +10,7 @@ import (
 )
 
 func IsAllowed(r *http.Request, w http.ResponseWriter, dataOwners ...string) bool {
-	if Horizon(r) == nil {
+	if r.Context().Value(horizonCtxKey) == nil {
 		Log(r).Warn("horizon is nil, skipping verification")
 		return true
 	}

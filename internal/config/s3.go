@@ -10,12 +10,14 @@ import (
 )
 
 type s3Config struct {
-	AccessKey string `fig:"access_key"`
-	SecretKey string `fig:"secret_key"`
-	Endpoint  string `fig:"endpoint"`
+	AccessKey string `fig:"access_key,required"`
+	SecretKey string `fig:"secret_key,required"`
+	Endpoint  string `fig:"endpoint,required"`
 	Region    string `fig:"region"`
-	Bucket    string `fig:"bucket"`
+
+	Bucket string `fig:"bucket,required"`
 }
+
 type S3 interface {
 	AwsConfig() *aws.Config
 	Bucket() string
@@ -45,7 +47,6 @@ func (s *s3) AwsConfig() *aws.Config {
 			Region:           aws.String(config.Region),
 			Credentials:      credentials.NewStaticCredentials(config.AccessKey, config.SecretKey, ""),
 			Endpoint:         aws.String(config.Endpoint),
-			DisableSSL:       aws.Bool(true),
 			S3ForcePathStyle: aws.Bool(true),
 		}
 	}).(*aws.Config)

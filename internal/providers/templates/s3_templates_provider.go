@@ -10,28 +10,23 @@ import (
 )
 
 func NewS3TemplatesProvider(cfg *aws.Config, bucket string) TemplatesProvider {
-	sess, err := session.NewSession(cfg)
-	if err != nil {
-		panic(errors.Wrap(err, "failed to create new aws session"))
-	}
-	instance := s3.New(sess)
+	sess := session.Must(session.NewSession(cfg))
 	return &s3TemplatesProvider{
-		instance: instance,
-		bucket:   bucket,
+		svc:    s3.New(sess),
+		bucket: bucket,
 	}
 }
 
 type s3TemplatesProvider struct {
-	instance *s3.S3
-	bucket   string
+	svc    *s3.S3
+	bucket string
 }
 
 func (s *s3TemplatesProvider) GetTemplate(topic, channel, locale string) (raw []byte, errClose error) {
-	path := fmt.Sprintf("/templates/%s-%s-%s", channel, topic, locale)
-
-	file, err := s.instance.GetObject(&s3.GetObjectInput{
+	key := fmt.Sprintf("templates/%s-%s-%s", channel, topic, locale)
+	file, err := s.svc.GetObject(&s3.GetObjectInput{
 		Bucket: aws.String(s.bucket),
-		Key:    aws.String(path),
+		Key:    aws.String(key),
 	})
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get template file object")
