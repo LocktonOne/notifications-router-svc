@@ -2,10 +2,10 @@ FROM golang:1.19.7-alpine as buildbase
 
 RUN apk add git build-base
 
-WORKDIR /go/src/gitlab.com/tokend/notifications-router-svc
+WORKDIR /go/src/gitlab.com/tokend/notifications/notifications-router-svc
 COPY . .
 
-RUN GOOS=linux go build -o /usr/local/bin/notifications-router-svc /go/src/gitlab.com/tokend/notifications-router-svc
+RUN GOOS=linux go build -o /usr/local/bin/notifications-router-svc /go/src/gitlab.com/tokend/notifications/notifications-router-svc
 
 
 FROM alpine:3.9
