@@ -4,9 +4,9 @@ go 1.14
 
 require (
 	github.com/Masterminds/squirrel v1.4.0
-	github.com/alecthomas/jsonschema v0.0.0-20200530073317-71f438968921 // indirect
 	github.com/alecthomas/kingpin v2.2.6+incompatible
-	github.com/asaskevich/govalidator v0.0.0-20200428143746-21a406dcc535 // indirect
+	github.com/asaskevich/govalidator v0.0.0-20200428143746-21a406dcc535
+	github.com/aws/aws-sdk-go v1.27.0
 	github.com/certifi/gocertifi v0.0.0-20200211180108-c7c1fbc02894 // indirect
 	github.com/evalphobia/logrus_sentry v0.8.2 // indirect
 	github.com/fatih/structs v1.1.0
@@ -15,12 +15,11 @@ require (
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
 	github.com/gobuffalo/packr/v2 v2.8.0
 	github.com/google/jsonapi v0.0.0-20200226002910-c8283f632fb7 // indirect
-	github.com/jmoiron/sqlx v1.2.0
+	github.com/jmoiron/sqlx v1.2.0 // indirect
 	github.com/nullstyle/go-xdr v0.0.0-20180726165426-f4c839f75077 // indirect
 	github.com/pkg/errors v0.8.1
 	github.com/rubenv/sql-migrate v0.0.0-20200429072036-ae26b214fa43
 	github.com/spf13/cast v1.3.0
-	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
 	gitlab.com/distributed_lab/ape v1.5.0
 	gitlab.com/distributed_lab/figure v2.1.0+incompatible
 	gitlab.com/distributed_lab/json-api-connector v0.2.1
