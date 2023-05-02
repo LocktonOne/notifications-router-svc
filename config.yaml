@@ -26,6 +26,13 @@ listener:
 registration_api:
   addr: :8080
 
+s3:
+  access_key:
+  secret_key:
+  endpoint:
+  region:
+  bucket:
+
 cop:
   disabled: true
   endpoint: "http://..."

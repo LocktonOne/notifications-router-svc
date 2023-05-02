@@ -16,8 +16,6 @@ import (
 
 	"gitlab.com/tokend/notifications/notifications-router-svc/internal/notificators"
 
-	"gitlab.com/tokend/notifications/notifications-router-svc/internal/connectors/horizon"
-
 	"gitlab.com/distributed_lab/logan/v3/errors"
 
 	"gitlab.com/distributed_lab/running"
@@ -34,7 +32,6 @@ const (
 )
 
 func NewProcessor(config config.Config, notificatorsStorage notificators.NotificatorsStorage) types.Service {
-	horizonConnector := horizon.NewConnector(config.Client())
 	return &processor{
 		log:            config.Log().WithField("runner", serviceName),
 		notificatorCfg: config.NotificatorConfig(),
@@ -42,13 +39,10 @@ func NewProcessor(config config.Config, notificatorsStorage notificators.Notific
 		notificationsConnectorProvider: &notificatorsConnectorProvider{
 			notificatorsStorage: notificatorsStorage,
 		},
-		identifierProvider: horizonConnector,
 		templatesHelper: &templatesHelper{
 			notificatorCfg:    config.NotificatorConfig(),
-			templatesProvider: templates.NewHorizonTemplatesProvider(config.Client()),
-			settingsProvider:  horizonConnector,
+			templatesProvider: templates.NewS3TemplatesProvider(config.AwsConfig(), config.Bucket()),
 		},
-		settingsProvider: horizonConnector,
 	}
 }
 

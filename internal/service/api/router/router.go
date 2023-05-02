@@ -7,9 +7,7 @@ import (
 	"github.com/go-chi/chi"
 	"gitlab.com/distributed_lab/ape"
 	"gitlab.com/distributed_lab/logan/v3/errors"
-	"gitlab.com/tokend/go/doorman"
 	"gitlab.com/tokend/notifications/notifications-router-svc/internal/config"
-	"gitlab.com/tokend/notifications/notifications-router-svc/internal/connectors/horizon"
 	"gitlab.com/tokend/notifications/notifications-router-svc/internal/data/pg"
 	"gitlab.com/tokend/notifications/notifications-router-svc/internal/service/api/helpers"
 	"gitlab.com/tokend/notifications/notifications-router-svc/internal/service/api/router/handlers"
@@ -41,11 +39,6 @@ func router(cfg config.Config) chi.Router {
 	log := cfg.Log().WithFields(map[string]interface{}{
 		"service": "notifications-api",
 	})
-	horizonConnector := horizon.NewConnector(cfg.Client())
-	info, err := horizonConnector.Info()
-	if err != nil {
-		panic(errors.Wrap(err, "failed to get horizon info"))
-	}
 
 	r.Use(
 		ape.RecoverMiddleware(log),
@@ -54,12 +47,6 @@ func router(cfg config.Config) chi.Router {
 			helpers.CtxLog(log),
 			helpers.CtxNotificationsQ(pg.NewNotificationsQ(cfg.DB())),
 			helpers.CtxDeliveriesQ(pg.NewDeliveriesQ(cfg.DB())),
-			helpers.CtxHorizon(horizonConnector),
-			helpers.CtxDoorman(doorman.New(
-				cfg.SkipSignCheck(),
-				horizonConnector),
-			),
-			helpers.CtxHorizonInfo(info),
 		),
 	)
 

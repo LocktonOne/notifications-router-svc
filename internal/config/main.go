@@ -18,6 +18,7 @@ type Config interface {
 	Doorman
 	Notificator
 	RegistrationAPIer
+	S3
 }
 
 type config struct {
@@ -31,6 +32,7 @@ type config struct {
 	Doorman
 	Notificator
 	RegistrationAPIer
+	S3
 }
 
 func New(getter kv.Getter) Config {
@@ -44,5 +46,6 @@ func New(getter kv.Getter) Config {
 		Doorman:           NewDoorman(getter),
 		Notificator:       NewNotificator(getter),
 		RegistrationAPIer: NewRegistrationAPIer(getter),
+		S3:                NewS3(getter),
 	}
 }

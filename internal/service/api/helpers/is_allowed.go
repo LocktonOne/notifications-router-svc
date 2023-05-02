@@ -10,6 +10,10 @@ import (
 )
 
 func IsAllowed(r *http.Request, w http.ResponseWriter, dataOwners ...string) bool {
+	if r.Context().Value(horizonCtxKey) == nil {
+		Log(r).Warn("horizon is nil, skipping verification")
+		return true
+	}
 	constraints := make([]doorman.SignerConstraint, 0, len(dataOwners))
 	for _, dataOwner := range dataOwners {
 		// invalid account address will make doorman return 401 w/o considering other constraints
