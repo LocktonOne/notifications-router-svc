@@ -2,6 +2,7 @@ package processor
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"gitlab.com/tokend/notifications/notifications-router-svc/internal/providers/settings"
 
@@ -30,12 +31,24 @@ func (h *templatesHelper) buildMessage(channel string, delivery data.Delivery, n
 		return data.Message{}, errors.Wrap(err, "failed to get template")
 	}
 
-	locale, err := h.getLocale(delivery, templateAttrs)
-	if err != nil {
-		return data.Message{}, errors.Wrap(err, "failed to get locale")
-	}
+	// locale, err := h.getLocale(delivery, templateAttrs)
+	//if err != nil {
+	//	return data.Message{}, errors.Wrap(err, "failed to get locale")
+	//}
 
-	rawMes, err := h.templatesProvider.GetTemplate(notification.Topic, channel, locale)
+	//rawMes, err := h.templatesProvider.GetTemplate(notification.Topic, channel, locale)
+
+	// TODO: take it from minio
+	fmt.Println("templateAttrs", templateAttrs)
+	rawMes := []byte(fmt.Sprintf(`
+{
+	"type": "email",
+	"attributes": {
+		"text": "Hello, Klon user!\nClick here to verify your email!\n{{.Link}}",
+		"subject": "%s"
+	}
+}
+`, notification.Topic))
 	if err != nil {
 		return data.Message{}, errors.Wrap(err, "failed to download template")
 	}
@@ -52,6 +65,7 @@ func (h *templatesHelper) buildMessage(channel string, delivery data.Delivery, n
 	}
 
 	var result data.Message
+
 	err = json.Unmarshal(rawMes, &result)
 	if err != nil {
 		return data.Message{}, errors.Wrap(err, "failed to marshal template to message")
