@@ -38,9 +38,11 @@ func (h *templatesHelper) buildMessage(channel string, delivery data.Delivery, n
 
 	//rawMes, err := h.templatesProvider.GetTemplate(notification.Topic, channel, locale)
 
-	// TODO: take it from minio
-	fmt.Println("templateAttrs", templateAttrs)
-	rawMes := []byte(fmt.Sprintf(`
+	// TODO: take it from minio or s3
+	var rawMes []byte
+	switch channel {
+	case "email":
+		rawMes = []byte(fmt.Sprintf(`
 {
 	"type": "email",
 	"attributes": {
@@ -49,6 +51,18 @@ func (h *templatesHelper) buildMessage(channel string, delivery data.Delivery, n
 	}
 }
 `, notification.Topic))
+		break
+	case "sms":
+		rawMes = []byte(fmt.Sprintf(`
+{
+	"type": "sms",
+	"attributes": {
+		"body": "Hello, Klon user! This is your verification code! {{.Code}}"
+	}
+}
+`))
+	}
+
 	if err != nil {
 		return data.Message{}, errors.Wrap(err, "failed to download template")
 	}
@@ -77,7 +91,7 @@ func (h *templatesHelper) buildMessage(channel string, delivery data.Delivery, n
 			return data.Message{}, errors.Wrap(err, "failed to append files to message")
 		}
 	}
-
+	fmt.Println(result)
 	return result, nil
 }
 
