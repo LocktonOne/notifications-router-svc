@@ -46,7 +46,7 @@ func (h *templatesHelper) buildMessage(channel string, delivery data.Delivery, n
 {
 	"type": "email",
 	"attributes": {
-		"text": "Hello, Klon user!\nClick here to verify your email!\n{{.Link}}",
+		"text": "Hello, LocktonOne user!\nClick here to verify your email!\n{{.Link}}",
 		"subject": "%s"
 	}
 }
@@ -57,7 +57,7 @@ func (h *templatesHelper) buildMessage(channel string, delivery data.Delivery, n
 {
 	"type": "sms",
 	"attributes": {
-		"body": "Hello, Klon user! This is your verification code! {{.Code}}"
+		"body": "Hello, LocktonOne user! This is your verification code! {{.Code}}"
 	}
 }
 `))
