@@ -46,7 +46,7 @@ func (h *templatesHelper) buildMessage(channel string, delivery data.Delivery, n
 {
 	"type": "email",
 	"attributes": {
-		"text": "Hello, LocktonOne user!\nClick here to verify your email!\n{{.Link}}",
+		"text": "Hello, LocktonOne user!\nThis is your verification code!\n{{.Code}}",
 		"subject": "%s"
 	}
 }
